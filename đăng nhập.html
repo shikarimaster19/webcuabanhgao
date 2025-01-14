@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Nhập & Tạo Tài Khoản</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 400px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .container input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .container button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #28a745;
+      color: white;
+      font-size: 16px;
+    }
+    .container button:hover {
+      background-color: #218838;
+    }
+    .toggle-link {
+      text-align: center;
+      margin-top: 10px;
+      cursor: pointer;
+      color: #007bff;
+      text-decoration: underline;
+    }
+    .toggle-link:hover {
+      color: #0056b3;
+    }
+    .message {
+      text-align: center;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="loginContainer">
+    <h2>Đăng Nhập</h2>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+      <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+      <button type="submit">Đăng Nhập</button>
+    </form>
+    <p class="toggle-link" onclick="toggleForm('register')">Chưa có tài khoản? Tạo tài khoản mới</p>
+    <p id="loginMessage" class="message"></p>
+  </div>
+
+  <div class="container" id="registerContainer" style="display: none;">
+    <h2>Tạo Tài Khoản</h2>
+    <form id="registerForm" onsubmit="handleRegister(event)">
+      <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+      <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+      <button type="submit">Đăng Ký</button>
+    </form>
+    <p class="toggle-link" onclick="toggleForm('login')">Đã có tài khoản? Đăng nhập</p>
+    <p id="registerMessage" class="message"></p>
+  </div>
+
+  <script>
+    // Giả lập cơ sở dữ liệu người dùng bằng một đối tượng
+    var users = {};
+
+    // Hàm xử lý đăng nhập
+    function handleLogin(event) {
+      event.preventDefault();
+      var username = document.getElementById('loginUsername').value;
+      var password = document.getElementById('loginPassword').value;
+      var messageElement = document.getElementById('loginMessage');
+
+      if (users[username] && users[username] === password) {
+        alert('Đăng nhập thành công!');
+        window.location.href = 'https://shikarimaster19.github.io/webcuabanhgao/'; // Điều hướng sau khi đăng nhập thành công
+      } else {
+        messageElement.innerText = 'Tên người dùng hoặc mật khẩu không đúng!';
+      }
+    }
+
+    // Hàm xử lý tạo tài khoản
+    function handleRegister(event) {
+      event.preventDefault();
+      var username = document.getElementById('registerUsername').value;
+      var password = document.getElementById('registerPassword').value;
+      var messageElement = document.getElementById('registerMessage');
+
+      if (users[username]) {
+        messageElement.innerText = 'Tên người dùng đã tồn tại!';
+      } else {
+        users[username] = password;
+        alert('Tạo tài khoản thành công! Hãy đăng nhập.');
+        toggleForm('login');
+      }
+    }
+
+    // Hàm chuyển đổi giữa form đăng nhập và tạo tài khoản
+    function toggleForm(form) {
+      if (form === 'register') {
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('registerContainer').style.display = 'block';
+      } else {
+        document.getElementById('loginContainer').style.display = 'block';
+        document.getElementById('registerContainer').style.display = 'none';
+      }
+
+      // Xóa thông báo lỗi khi chuyển form
+      document.getElementById('loginMessage').innerText = '';
+      document.getElementById('registerMessage').innerText = '';
+    }
+  </script>
+</body>
+</html>
